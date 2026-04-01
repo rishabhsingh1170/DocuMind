@@ -46,12 +46,12 @@ function EmployeeDashboard() {
                     <hr className="my-4" />
 
                     {/* Ask Query */}
-                    <button className="w-full bg-indigo-500 text-white py-2 rounded-lg mb-4">
+                    {/* <button className="w-full bg-indigo-500 text-white py-2 rounded-lg mb-4">
                         Ask Query
-                    </button>
+                    </button> */}
 
                     {/* History Dropdown */}
-                    <div>
+                    {/* <div>
                         <button
                             onClick={() => setShowHistory(!showHistory)}
                             className="w-full bg-white py-2 rounded-lg shadow"
@@ -66,7 +66,7 @@ function EmployeeDashboard() {
                                 <p className="text-sm">Work from home rules</p>
                             </div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* logout button  */}
@@ -74,7 +74,7 @@ function EmployeeDashboard() {
                     <button
                         onClick={() => {
                             localStorage.removeItem("role");
-                            window.location.href = "/login";
+                            window.location.href = "/";
                         }}
                         className="bg-red-400 text-white w-full py-2 rounded-full"
                     >
@@ -87,10 +87,10 @@ function EmployeeDashboard() {
             </div>
 
             {/* 🔹 RIGHT SECTION (6:3 GRID) */}
-            <div className="flex-1 p-6 grid grid-cols-9 gap-6">
+            <div className="flex bg-black">
 
                 {/* 🟦 CHAT SECTION (6 parts) */}
-                <div className="col-span-6 bg-indigo-200 rounded-2xl shadow flex flex-col">
+                <div className=" bg-indigo-200 rounded-2xl shadow flex flex-col">
 
                     {/* Chat Messages */}
                     <div className="flex-1 p-4 overflow-y-auto space-y-3">
@@ -120,6 +120,7 @@ function EmployeeDashboard() {
                             onClick={handleSend}
                             className="bg-indigo-600 text-white px-4 rounded-lg"
                         >
+                        <MessageCircleQuestionMark size={18} />
                             Send
                         </button>
                     </div>
@@ -138,13 +139,13 @@ function EmployeeDashboard() {
                 </div>
 
                 {/* 🟩 DOCUMENT REFERENCE SECTION (3 parts) */}
-                <div className="col-span-3 bg-white rounded-2xl shadow p-4">
+                {/* <div className="col-span-3 bg-white rounded-2xl shadow p-4">
 
                     <h3 className="text-lg font-semibold mb-4">
                         Document References
                     </h3>
 
-                    {/* Demo references */}
+                    Demo references
                     <div className="space-y-3 ">
                         <div className="p-3 bg-indigo-100 rounded-lg">
                             <p className="font-medium">HR Policy.pdf</p>
@@ -168,14 +169,14 @@ function EmployeeDashboard() {
                         </div>
                     </div>
 
-                    {/* 🔴 FUTURE RAG INTEGRATION */}
-                    {/*
+                    🔴 FUTURE RAG INTEGRATION
+                    
             TODO:
             - Show actual document chunks retrieved by RAG
             - Highlight relevant text
             - Add "View Full Document" option
-          */}
-                </div>
+         
+                </div> */}
             </div>
         </div>
     );

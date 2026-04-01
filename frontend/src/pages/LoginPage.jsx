@@ -31,36 +31,27 @@ function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-400 to-indigo-800">
+        <div className="min-h-screen flex items-center justify-center bg-[#091413] px-4 py-6">
 
-            {/* Top Right Sign Up */}
-            <div className="absolute top-6 right-8 text-white">
-                <span className="mr-3 text-sm">Not a member?</span>
-                <button className="border px-4 py-1 rounded hover:bg-white hover:text-black transition"
-                    onClick={() => navigate("/signup")}>
-                    Sign Up
-                </button>
-            </div>
 
-            {/* login card  */}
-            <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-96 text-white">
 
-                {/* Logo Placeholder */}
-                <div className="flex justify-center mb-8">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
-                        <BrainCircuit className="h-5 w-5" />
-                        <Lock className="absolute -right-1 -top-1 h-3.5 w-3.5 rounded-full bg-white p-0.5 text-indigo-700" /></div>
-                </div>
+            <div className="w-full max-w-[1000px] overflow-hidden rounded-[32px] bg-[#091413] shadow-[0_40px_120px_rgba(0,0,0,0.35)]">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="bg-[#F3F9F4] p-5 flex items-center justify-center">
+                        <div className="w-full max-w-md rounded-[32px] bg-white p-6 shadow-[0_30px_80px_rgba(9,20,19,0.12)]">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm uppercase tracking-[0.25em] text-[#408A71] font-semibold">Welcome back</p>
+                                    <h2 className="mt-3 text-3xl font-semibold text-[#091413]">Login to your account</h2>
+                                </div>
+                                <span className="rounded-2xl bg-[#B0E4CC] px-4 py-2 text-sm font-semibold text-[#091413]">{role === "admin" ? "Admin" : "Employee"}</span>
+                            </div>
 
-                <h2 className="text-2xl font-bold text-center mb-6">
-                    Login to Your Account
-                </h2>
-
-                <form onSubmit={handleLogin} className="space-y-4">
+                            <form onSubmit={handleLogin} className="mt-8 space-y-5">
 
                     {/* Role Selection */}
                     <div>
-                        <label className="block mb-1 font-medium">Role as: </label>
+                        <label className="block text-sm font-medium text-[#091413]">Role</label>
                         <div className="flex gap-4">
                             <label className="flex items-center gap-2">
                                 <input
@@ -86,37 +77,86 @@ function LoginPage() {
 
                     {/* Email */}
                     <div>
+                        <label className="block text-sm font-medium text-[#091413]">Email</label>
                         <input
                             type="email"
-                            placeholder="Email"
-                            className="w-full border rounded-full px-4 py-2 text-black"
+                            placeholder="you@example.com"
+                            className="w-full rounded-3xl border border-[#D5E9D9] bg-[#F8FDF7] px-5 py-3 text-[#091413] outline-none transition focus:border-[#408A71] focus:ring-2 focus:ring-[#B0E4CC]/50"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            // required
                         />
                     </div>
 
                     {/* Password */}
                     <div>
+                        <label className="block text-sm font-medium text-[#091413]">Password</label>
                         <input
                             type="password"
-                            placeholder="Password"
-                            className="w-full border rounded-full px-4 py-2 text-black"
+                            placeholder="Enter password"
+                            className="w-full rounded-3xl border border-[#D5E9D9] bg-[#F8FDF7] px-5 py-3 text-[#091413] outline-none transition focus:border-[#408A71] focus:ring-2 focus:ring-[#B0E4CC]/50"
                             value={password}
-                            onChange={(e) => setEmail(e.target.value)}
-                            // required
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
                     {/* Submit */}
                     <button
                         type="submit"
-                        className="w-full bg-indigo-800 text-white-800 py-2 rounded-full hover:bg-indigo-600 transition"
+                        className="w-full rounded-3xl bg-gradient-to-r from-[#285A48] to-[#408A71] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:brightness-110"
                     >
                         Login
                     </button>
                 </form>
 
+                            <p className="mt-6 text-center text-sm text-[#637B6D]">
+                                New here?{' '}
+                                <span
+                                    className="cursor-pointer font-semibold text-[#285A48] hover:text-[#408A71]"
+                                    onClick={() => navigate('/signup')}
+                                >
+                                    Sign Up
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="relative bg-[#285A48] p-5 text-white flex flex-col justify-between overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(176,228,204,0.35),_transparent_35%)] pointer-events-none" />
+                        <div className="relative z-10">
+                            <div className="inline-flex items-center gap-3 rounded-full bg-[#408A71] bg-opacity-20 px-4 py-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#B0E4CC] shadow-sm shadow-black/10">
+                                Seamless access
+                            </div>
+
+                            <h1 className="mt-8 text-4xl font-semibold leading-tight tracking-tight">
+                                Fast login for every team member
+                            </h1>
+
+                            <p className="mt-6 max-w-xl text-[#DCEFD9] text-sm leading-7">
+                                Jump back into your workspace with a calm and confident experience.
+                                This login panel keeps your access simple while staying aligned with the DocMind brand.
+                            </p>
+
+                            <div className="mt-10 grid gap-4">
+                                <div className="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-[#B0E4CC]">Security first</p>
+                                    <div className="mt-4 text-sm leading-6 text-[#E7F4E8]">
+                                        <p className="font-semibold">Protected access</p>
+                                        <p className="text-[#D6E7D4]">Login flow designed around trust and speed.</p>
+                                    </div>
+                                </div>
+
+                                <div className="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-[#B0E4CC]">Role aware</p>
+                                    <div className="mt-4 text-sm leading-6 text-[#E7F4E8]">
+                                        <p className="font-semibold">Admin + Employee</p>
+                                        <p className="text-[#D6E7D4]">Choose your workspace instantly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     );

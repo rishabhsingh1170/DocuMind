@@ -121,7 +121,7 @@ def send_otp_logic(email: str) -> dict:
     """
     Send OTP to email for verification during signup.
     
-    Args:
+    Args:`
         email: Email address to send OTP to
         
     Returns:

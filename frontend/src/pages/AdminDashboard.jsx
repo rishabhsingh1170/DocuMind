@@ -1,101 +1,176 @@
 import { useState } from "react";
+import {
+    BookUp,
+    BookX,
+    CircleStar,
+    KeyRound,
+    MessageCircleQuestionMark
+} from "lucide-react";
 
 function AdminDashboard() {
-    const [showHistory, setShowHistory] = useState(false);
+    const [activeMenu, setActiveMenu] = useState("dashboard");
+    const [docsUploaded] = useState(true);
+
+    const adminName = "Admin Name";
+    const companyName = "DocMind Innovations";
 
     return (
-        <div className="min-h-screen flex bg-slate-100">
+        <div className="min-h-screen bg-white text-white">
+            <div className="mx-auto max-w-7xl px-4 py-8">
+                <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
 
-            {/* 🔹 LEFT SIDEBAR */}
-            <div className="w-1/4 bg-indigo-200 p-6 flex flex-col justify-between">
-
-                <div>
-                    {/* Profile */}
-                    <div className="mb-6">
-                        <h2 className="text-xl font-bold">Admin Name</h2>
-                        <p className="text-sm text-gray-700">Company XYZ</p>
-                        <p className="text-sm text-gray-600">Role: Admin</p>
-                    </div>
-
-                    {/* Ask Query */}
-                    <button className="w-full bg-indigo-500 text-white py-2 rounded-lg mb-4">
-                        Ask Query
-                    </button>
-
-                    {/* History Dropdown */}
-                    <div>
-                        <button
-                            onClick={() => setShowHistory(!showHistory)}
-                            className="w-full bg-white py-2 rounded-lg shadow"
-                        >
-                            History
-                        </button>
-
-                        {showHistory && (
-                            <div className="mt-2 bg-white p-2 rounded shadow">
-                                <p className="text-sm">Query 1</p>
-                                <p className="text-sm">Query 2</p>
-                                <p className="text-sm">Query 3</p>
+                    {/* LEFT MENU */}
+                    <aside className="flex h-full flex-col justify-evenly rounded-[32px] bg-[#285A48] p-6 shadow-[0_40px_80px_rgba(0,0,0,0.25)]">
+                        <div>
+                            <div className="rounded-[28px] border border-[#B0E4CC]/20 bg-[#0F2F26] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+                                <div className="mb-4 flex items-center gap-4">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-[#408A71] text-2xl font-bold text-white shadow-inner">
+                                        {adminName.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.25em] text-[#B0E4CC]/80">Admin</p>
+                                        <h2 className="mt-1 text-xl font-semibold text-white">{adminName}</h2>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-[#D9EAD7]">{companyName}</p>
+                                <p className="mt-3 text-sm text-[#B0E4CC]">Role: Admin</p>
                             </div>
-                        )}
-                    </div>
-                </div>
-                {/* logout button  */}
-                <div className=" py-4 border-t" >
-                    <button
-                        onClick={() => {
-                            localStorage.removeItem("role");
-                            window.location.href = "/login";
-                        }}
-                        className="bg-red-400 text-white w-full py-2 rounded-full"
-                    >
-                        Logout
-                    </button>
-                    <p className="py-2 text-xs text-gray-600">Admin Panel</p>
-                </div>
-            </div>
 
+                            <div className="mt-8 space-y-3">
+                                <button
+                                    onClick={() => setActiveMenu("upload")}
+                                    className={`flex w-full items-center gap-3 rounded-3xl border px-4 py-3 text-left transition ${activeMenu === "upload" ? "border-[#B0E4CC] bg-[#408A71]/20" : "border-transparent bg-white/5 hover:border-[#B0E4CC]/50 hover:bg-white/10"}`}
+                                >
+                                    <BookUp className="h-5 w-5 text-[#B0E4CC]" />
+                                    <div>
+                                        <p className="font-semibold">Upload Documents</p>
+                                        <p className="text-xs text-[#D9EAD7]">Add new files to the workspace</p>
+                                    </div>
+                                </button>
 
+                                <button
+                                    onClick={() => setActiveMenu("remove")}
+                                    className={`flex w-full items-center gap-3 rounded-3xl border px-4 py-3 text-left transition ${activeMenu === "remove" ? "border-[#B0E4CC] bg-[#408A71]/20" : "border-transparent bg-white/5 hover:border-[#B0E4CC]/50 hover:bg-white/10"}`}
+                                >
+                                    <BookX className="h-5 w-5 text-[#B0E4CC]" />
+                                    <div>
+                                        <p className="font-semibold">Remove Documents</p>
+                                        <p className="text-xs text-[#D9EAD7]">Delete outdated files safely</p>
+                                    </div>
+                                </button>
 
-            {/* 🔹 RIGHT SIDE */}
-            <div className="flex-1 p-6">
+                                <button
+                                    onClick={() => setActiveMenu("requests")}
+                                    className={`flex w-full items-center gap-3 rounded-3xl border px-4 py-3 text-left transition ${activeMenu === "requests" ? "border-[#B0E4CC] bg-[#408A71]/20" : "border-transparent bg-white/5 hover:border-[#B0E4CC]/50 hover:bg-white/10"}`}
+                                >
+                                    <MessageCircleQuestionMark className="h-5 w-5 text-[#B0E4CC]" />
+                                    <div>
+                                        <p className="font-semibold">Requests</p>
+                                        <p className="text-xs text-[#D9EAD7]">Review document approvals</p>
+                                    </div>
+                                </button>
 
-                {/* Upload Section */}
-                <div className="bg-white p-8 rounded-2xl shadow mb-6">
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <p className="text-lg font-medium mb-2">
-                            Drag & Drop Documents Here
-                        </p>
-                        <p className="text-sm text-gray-500 mb-4">
-                            or upload files/folders
-                        </p>
+                                {docsUploaded && (
+                                    <button
+                                        onClick={() => setActiveMenu("uploaded")}
+                                        className={`flex w-full items-center gap-3 rounded-3xl border px-4 py-3 text-left transition ${activeMenu === "uploaded" ? "border-[#B0E4CC] bg-[#408A71]/20" : "border-transparent bg-white/5 hover:border-[#B0E4CC]/50 hover:bg-white/10"}`}
+                                    >
+                                        <CircleStar className="h-5 w-5 text-[#B0E4CC]" />
+                                        <div>
+                                            <p className="font-semibold">Uploaded Docs</p>
+                                            <p className="text-xs text-[#D9EAD7]">Active file: token</p>
+                                        </div>
+                                    </button>
+                                )}
 
-                        <input type="file" className="hidden" id="fileUpload" multiple />
+                                <button
+                                    onClick={() => setActiveMenu("token")}
+                                    className={`flex w-full items-center gap-3 rounded-3xl border px-4 py-3 text-left transition ${activeMenu === "token" ? "border-[#B0E4CC] bg-[#408A71]/20" : "border-transparent bg-white/5 hover:border-[#B0E4CC]/50 hover:bg-white/10"}`}
+                                >
+                                    <KeyRound className="h-5 w-5 text-[#B0E4CC]" />
+                                    <div>
+                                        <p className="font-semibold">Chat Token</p>
+                                        <p className="text-xs text-[#D9EAD7]">docName: token</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
 
-                        <label
-                            htmlFor="fileUpload"
-                            className="bg-indigo-500 text-white px-6 py-2 rounded hover:bg-teal-600 transition cursor-pointer "
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem("role");
+                                window.location.href = "/";
+                            }}
+                            className="mt-8 rounded-full bg-[#408A71] px-5 py-3 text-sm font-semibold text-[#091413] transition hover:bg-[#B0E4CC] hover:text-[#091413]"
                         >
-                            Upload Files
-                        </label>
-                    </div>
-                </div>
+                            Logout
+                        </button>
+                    </aside>
 
-                {/* Stats Section */}
-                <div className="grid grid-cols-2 gap-6">
+                    {/* RIGHT DASHBOARD */}
+                    <main className="rounded-[32px] bg-[#0F2F26] p-8 shadow-[0_40px_120px_rgba(0,0,0,0.25)]">
+                        <div className="mb-8 rounded-[28px] border border-[#B0E4CC]/15 bg-[#13372F] p-8 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]">
+                            <p className="text-sm uppercase tracking-[0.3em] text-[#B0E4CC]/70">Admin dashboard</p>
+                            <h1 className="mt-4 text-4xl font-semibold text-white">Hello, {adminName}.</h1>
+                            <p className="mt-4 max-w-3xl text-[#D9EAD7]">
+                                Manage company documents, review requests, and keep your knowledge base secure with one clear control center.
+                            </p>
+                        </div>
 
-                    {/* Employees Count */}
-                    <div className="bg-white p-6 rounded-xl shadow">
-                        <h3 className="text-lg font-semibold">Employees Joined</h3>
-                        <p className="text-3xl font-bold mt-2">120</p>
-                    </div>
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            <div className="rounded-[28px] border border-[#B0E4CC]/15 bg-[#153B34] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.3em] text-[#B0E4CC]/70">Upload docs</p>
+                                        <h2 className="mt-3 text-2xl font-semibold text-white">Fast file upload</h2>
+                                    </div>
+                                    <div className="rounded-3xl bg-[#285A48] p-3 text-[#B0E4CC]">
+                                        <BookUp className="h-5 w-5" />
+                                    </div>
+                                </div>
+                                <p className="mt-4 text-[#D9EAD7]">Drag files here or click to add new documents for your team.</p>
+                            </div>
 
-                    {/* Documents Count */}
-                    <div className="bg-white p-6 rounded-xl shadow">
-                        <h3 className="text-lg font-semibold">Documents Uploaded</h3>
-                        <p className="text-3xl font-bold mt-2">45</p>
-                    </div>
+                            <div className="rounded-[28px] border border-[#B0E4CC]/15 bg-[#153B34] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.3em] text-[#B0E4CC]/70">Current request</p>
+                                        <h2 className="mt-3 text-2xl font-semibold text-white">Pending approvals</h2>
+                                    </div>
+                                    <div className="rounded-3xl bg-[#285A48] p-3 text-[#B0E4CC]">
+                                        <MessageCircleQuestionMark className="h-5 w-5" />
+                                    </div>
+                                </div>
+                                <p className="mt-4 text-[#D9EAD7]">Review new document requests. Keep collaboration moving without delays.</p>
+                            </div>
 
+                            <div className="rounded-[28px] border border-[#B0E4CC]/15 bg-[#153B34] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.3em] text-[#B0E4CC]/70">Delete docs</p>
+                                        <h2 className="mt-3 text-2xl font-semibold text-white">Clean archives</h2>
+                                    </div>
+                                    <div className="rounded-3xl bg-[#285A48] p-3 text-[#B0E4CC]">
+                                        <BookX className="h-5 w-5" />
+                                    </div>
+                                </div>
+                                <p className="mt-4 text-[#D9EAD7]">Remove outdated files and keep your workspace streamlined.</p>
+                            </div>
+
+                            <div className="rounded-[28px] border border-[#B0E4CC]/15 bg-[#153B34] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm uppercase tracking-[0.3em] text-[#B0E4CC]/70">Chat token</p>
+                                        <h2 className="mt-3 text-2xl font-semibold text-white">Document token</h2>
+                                    </div>
+                                    <div className="rounded-3xl bg-[#285A48] p-3 text-[#B0E4CC]">
+                                        <KeyRound className="h-5 w-5" />
+                                    </div>
+                                </div>
+                                <p className="mt-4 text-[#D9EAD7]">Use the token channel for quick document conversations and knowledge access.</p>
+                            </div>
+                        </div>
+                    </main>
                 </div>
             </div>
         </div>
