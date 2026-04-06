@@ -7,6 +7,7 @@ except ModuleNotFoundError:
 
 class CompanyBase(BaseModel):
 	company_name: str
+	created_by: ObjectIdStr
 
 
 class CompanyCreate(CompanyBase):

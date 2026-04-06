@@ -6,6 +6,7 @@ Handles image uploads for profiles and document uploads.
 import cloudinary
 import cloudinary.uploader
 from fastapi import HTTPException
+from urllib.parse import unquote, urlparse
 
 try:
     from backend.config import CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
@@ -64,7 +65,7 @@ def upload_profile_image(file) -> str:
 def upload_document(file) -> str:
     """
     Upload a document file to Cloudinary.
-    Supports PDF, DOCX, and other common document formats.
+    Supports PDF only.
     
     Args:
         file: File object from FastAPI upload
@@ -79,23 +80,8 @@ def upload_document(file) -> str:
         if not file:
             raise HTTPException(status_code=400, detail="No file provided")
         
-        # Allowed document MIME types
-        allowed_types = [
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "text/plain",
-            "application/vnd.ms-powerpoint",
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        ]
-        
-        if file.content_type not in allowed_types:
-            raise HTTPException(
-                status_code=400, 
-                detail=f"Invalid document format. Allowed: PDF, DOCX, XLS, XLSX, PPT, PPTX, TXT"
-            )
+        if file.content_type != "application/pdf":
+            raise HTTPException(status_code=400, detail="Invalid document format. Only PDF files are allowed")
         
         # Read file content
         file_content = file.file.read()
@@ -133,3 +119,39 @@ def delete_file(public_id: str, resource_type: str = "image") -> bool:
     except Exception as e:
         print(f"Error deleting file from Cloudinary: {str(e)}")
         return False
+
+
+def _extract_public_id_from_url(file_url: str) -> str | None:
+    """
+    Extract the Cloudinary public_id from a secure URL.
+    """
+    try:
+        parsed = urlparse(file_url)
+        path = unquote(parsed.path)
+        upload_marker = "/upload/"
+        if upload_marker not in path:
+            return None
+
+        public_path = path.split(upload_marker, 1)[1]
+        path_parts = public_path.split("/")
+        if path_parts and path_parts[0].startswith("v") and path_parts[0][1:].isdigit():
+            path_parts = path_parts[1:]
+
+        public_id_with_ext = "/".join(path_parts)
+        if "." in public_id_with_ext:
+            public_id_with_ext = public_id_with_ext.rsplit(".", 1)[0]
+
+        return public_id_with_ext or None
+    except Exception:
+        return None
+
+
+def delete_document_by_url(file_url: str) -> bool:
+    """
+    Delete a Cloudinary raw document using its stored secure URL.
+    """
+    public_id = _extract_public_id_from_url(file_url)
+    if not public_id:
+        return False
+
+    return delete_file(public_id, resource_type="raw")

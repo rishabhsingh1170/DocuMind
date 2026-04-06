@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BotMessageSquare,
@@ -27,7 +28,11 @@ function HeroSection() {
 
           <div className="mt-8 flex justify-center flex-wrap gap-4">
             <button className="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-indigo-500/30 transition hover:bg-indigo-500">
-              Let's Start
+              <Link
+                to="/signup"
+              >
+                Get Start
+              </Link>
               <ArrowRight className="h-4 w-4" />
             </button>
             {/* <button className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-100">

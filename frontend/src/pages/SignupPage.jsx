@@ -4,9 +4,14 @@ import { ArrowRight, Loader2, ShieldCheck } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthInput from "../components/auth/AuthInput";
 
-const initialForm = { workEmail: "", password: "" };
+const initialForm = {
+  fullName: "",
+  workEmail: "",
+  organization: "",
+  password: "",
+};
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [formData, setFormData] = useState(initialForm);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -22,7 +27,7 @@ export default function LoginPage() {
     setIsLoading(true);
     setIsSuccess(false);
 
-    // TODO: Connect to FastAPI /auth/login endpoint here.
+    // TODO: Connect to FastAPI /auth/register endpoint here.
     setTimeout(() => {
       setIsLoading(false);
       setIsSuccess(true);
@@ -38,16 +43,25 @@ export default function LoginPage() {
           Enterprise Secure Access
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-          Welcome back to DocuMind AI
+          Create your DocuMind AI workspace
         </h1>
         <p className="max-w-lg text-sm text-slate-500 sm:text-base">
-          Sign in to continue managing secure, multi-tenant knowledge automation
-          for your organization.
+          Provision your tenant, centralize private knowledge, and automate
+          retrieval across teams.
         </p>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
+        <AuthInput
+          id="fullName"
+          label="Full Name"
+          value={formData.fullName}
+          onChange={handleChange}
+          placeholder="Alex Morgan"
+          autoComplete="name"
+        />
+
         <AuthInput
           id="workEmail"
           label="Work Email"
@@ -59,23 +73,23 @@ export default function LoginPage() {
         />
 
         <AuthInput
+          id="organization"
+          label="Company / Organization Name"
+          value={formData.organization}
+          onChange={handleChange}
+          placeholder="Acme Corporation"
+          autoComplete="organization"
+        />
+
+        <AuthInput
           id="password"
           label="Password"
           type="password"
           value={formData.password}
           onChange={handleChange}
           placeholder="••••••••"
-          autoComplete="current-password"
+          autoComplete="new-password"
         />
-
-        <div className="flex items-center justify-end">
-          <button
-            type="button"
-            className="text-sm font-medium text-indigo-600 transition hover:text-indigo-500"
-          >
-            Forgot your password?
-          </button>
-        </div>
 
         <button
           type="submit"
@@ -87,32 +101,25 @@ export default function LoginPage() {
           ) : (
             <ArrowRight className="h-4 w-4" />
           )}
-          {isLoading ? "Signing in..." : "Sign in"}
-        </button>
-
-        {/* SSO */}
-        <button
-          type="button"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
-        >
-          Sign in with Microsoft / Google
+          {isLoading ? "Creating Workspace..." : "Create Workspace"}
         </button>
 
         {isSuccess && (
           <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
-            Signed in successfully. Redirecting to your secure workspace...
+            Workspace created successfully. Your tenant setup is ready for
+            onboarding.
           </p>
         )}
       </form>
 
       {/* Toggle */}
       <p className="text-sm text-slate-500">
-        New to DocuMind AI?{" "}
+        Already have an account?{" "}
         <Link
-          to="/signup"
+          to="/login"
           className="font-semibold text-indigo-600 transition hover:text-indigo-500"
         >
-          Create an account
+          Sign in
         </Link>
       </p>
     </AuthLayout>
