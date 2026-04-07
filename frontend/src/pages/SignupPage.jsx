@@ -152,6 +152,7 @@ export default function SignupPage() {
           value={formData.fullName}
           onChange={handleChange}
           placeholder="Alex Morgan"
+          autoComplete="name"
         />
 
         <AuthInput
@@ -161,6 +162,7 @@ export default function SignupPage() {
           value={formData.workEmail}
           onChange={handleChange}
           placeholder="you@company.com"
+          autoComplete="email"
         />
 
         <AuthInput
@@ -168,7 +170,8 @@ export default function SignupPage() {
           label="Company / Organization Name"
           value={null}//{formData.organization}
           onChange={handleChange}
-          placeholder="Acme Corporation"
+          placeholder="Company/Corporation Name"
+          autoComplete="organization"
         />
 
         {/* Role */}
@@ -210,6 +213,7 @@ export default function SignupPage() {
           value={formData.password}
           onChange={handleChange}
           placeholder="••••••••"
+          autoComplete="new-password"
         />
 
         {/* Submit */}
@@ -217,6 +221,7 @@ export default function SignupPage() {
           type="submit"
           disabled={isLoading || showOtpInput}
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70"
+          
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
