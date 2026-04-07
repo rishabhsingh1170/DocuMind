@@ -17,6 +17,7 @@ export const APIS = {
 
     // POST /auth/login
     LOGIN: "/auth/login",
+    
   },
 
   // User routes (/users)
