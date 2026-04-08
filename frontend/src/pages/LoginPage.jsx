@@ -1,32 +1,68 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Loader2, ShieldCheck } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthInput from "../components/auth/AuthInput";
+import apiClient from "../utils/apiClient";
+import { APIS } from "../utils/apis";
 
 const initialForm = { workEmail: "", password: "" };
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(initialForm);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIsSuccess(false);
+    setError("");
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setIsSuccess(false);
+    setError("");
 
-    // TODO: Connect to FastAPI /auth/login endpoint here.
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const payload = {
+        email: formData.workEmail,
+        password: formData.password,
+      };
+
+      const res = await apiClient.post(APIS.AUTH.LOGIN, payload);
+
+      const data = res.data;
+
+      if (data?.access_token) {
+        localStorage.setItem("token", data.access_token);
+      }
+
+      if (data?.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("role", data.user.role || "");
+      }
+
       setIsSuccess(true);
-    }, 2000);
+
+      setTimeout(() => {
+        navigate("/home");
+      }, 1000);
+    } catch (err) {
+      const message =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Login failed. Please check your email and password.";
+
+      setError(message);
+      setIsSuccess(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +91,7 @@ export default function LoginPage() {
           value={formData.workEmail}
           onChange={handleChange}
           placeholder="you@company.com"
-          autoComplete="email"
+          // autoComplete="email"
         />
 
         <AuthInput
@@ -65,7 +101,7 @@ export default function LoginPage() {
           value={formData.password}
           onChange={handleChange}
           placeholder="••••••••"
-          autoComplete="current-password"
+          // autoComplete="current-password"
         />
 
         <div className="flex items-center justify-end">
@@ -95,8 +131,14 @@ export default function LoginPage() {
           type="button"
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
         >
-          Sign in with Microsoft / Google
+          Sign in with Google
         </button>
+
+        {error && (
+          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
+            {error}
+          </p>
+        )}
 
         {isSuccess && (
           <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
