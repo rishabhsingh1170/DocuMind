@@ -21,6 +21,36 @@ const initialForm = {
   otp: "",
 };
 
+function validatePasswordStrength(password) {
+  const value = String(password || "");
+
+  if (value.length < 8) {
+    return "Password must be at least 8 characters.";
+  }
+
+  if (/\s/.test(value)) {
+    return "Password must not contain spaces.";
+  }
+
+  if (!/[a-z]/.test(value)) {
+    return "Password must include at least one lowercase letter.";
+  }
+
+  if (!/[A-Z]/.test(value)) {
+    return "Password must include at least one uppercase letter.";
+  }
+
+  if (!/[0-9]/.test(value)) {
+    return "Password must include at least one number.";
+  }
+
+  if (!/[^A-Za-z0-9]/.test(value)) {
+    return "Password must include at least one special character.";
+  }
+
+  return "";
+}
+
 export default function SignupPage() {
   const [formData, setFormData] = useState(initialForm);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,6 +76,13 @@ export default function SignupPage() {
     setIsLoading(true);
     setError("");
 
+    const passwordError = validatePasswordStrength(formData.password);
+    if (passwordError) {
+      setIsLoading(false);
+      setError(passwordError);
+      return;
+    }
+
     try {
       // Send OTP to email
       await authAPI.sendOTP(formData.workEmail);
@@ -64,9 +101,10 @@ export default function SignupPage() {
     setIsLoading(true);
     setError("");
 
-    if (formData.password.trim().length < 8) {
+    const passwordError = validatePasswordStrength(formData.password);
+    if (passwordError) {
       setIsLoading(false);
-      setError("Password must be at least 8 characters.");
+      setError(passwordError);
       return;
     }
 
@@ -180,6 +218,11 @@ export default function SignupPage() {
                 </button>
               }
             />
+
+            <p className="-mt-2 text-xs leading-5 text-slate-500">
+              Use at least 8 characters with uppercase, lowercase, number, and
+              special character. Spaces are not allowed.
+            </p>
 
             <div className="space-y-2">
               <label

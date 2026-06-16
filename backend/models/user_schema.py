@@ -31,6 +31,13 @@ class UserCreate(UserBase):
     password: str = Field(min_length=8)
     company_id: Optional[ObjectIdStr] = None
 
+    @field_validator("password", mode="before")
+    @classmethod
+    def validate_password_no_spaces(cls, value):
+        if isinstance(value, str) and any(character.isspace() for character in value):
+            raise ValueError("Password must not contain spaces")
+        return value
+
     @field_validator("company_id", mode="before")
     @classmethod
     def normalize_company_id(cls, value):

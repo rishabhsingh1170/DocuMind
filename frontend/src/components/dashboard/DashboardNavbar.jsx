@@ -7,6 +7,7 @@ import {
   Camera,
   UserRound,
   ShieldCheck,
+  Trash2,
 } from "lucide-react";
 import { userAPI } from "../../utils/apiClient";
 
@@ -16,6 +17,8 @@ export default function DashboardNavbar({ user, onLogout, onUserUpdated }) {
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
   const [profileError, setProfileError] = useState("");
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   const getAvatarLabel = () => {
     if (!user?.name) {
@@ -60,6 +63,31 @@ export default function DashboardNavbar({ user, onLogout, onUserUpdated }) {
       setProfileError(error?.message || "Failed to update profile picture.");
     } finally {
       setIsSavingProfile(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleteError("");
+    setProfileMessage("");
+
+    const confirmMessage =
+      user?.role === "admin"
+        ? "Delete your account? This will also delete your chat, documents, and related records."
+        : "Delete your account? This action cannot be undone.";
+
+    const confirmed = window.confirm(confirmMessage);
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setIsDeletingAccount(true);
+      await userAPI.deleteMyAccount();
+      onLogout();
+    } catch (error) {
+      setDeleteError(error?.message || "Failed to delete your account.");
+    } finally {
+      setIsDeletingAccount(false);
     }
   };
 
@@ -182,6 +210,30 @@ export default function DashboardNavbar({ user, onLogout, onUserUpdated }) {
                   </p>
                 )}
               </form>
+
+              <div className="mt-4 border-t border-slate-200 pt-4">
+                <button
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  disabled={isDeletingAccount}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:opacity-60"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  {isDeletingAccount ? "Deleting..." : "Delete Account"}
+                </button>
+
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  {user?.role === "admin"
+                    ? "Admin deletion removes your chat, uploaded documents, access records, and related company data."
+                    : "Deleting your account removes your profile and access records."}
+                </p>
+
+                {deleteError && (
+                  <p className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                    {deleteError}
+                  </p>
+                )}
+              </div>
             </div>
           )}
         </div>

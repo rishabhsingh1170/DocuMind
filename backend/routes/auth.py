@@ -4,7 +4,7 @@ Endpoints for authentication: signup, login.
 """
 
 from fastapi import APIRouter, status
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 try:
     from backend.controller.auth_controller import (
@@ -122,6 +122,13 @@ class ForgotPasswordResetRequest(BaseModel):
     email: EmailStr
     otp: str
     new_password: str = Field(min_length=8)
+
+    @field_validator("new_password", mode="before")
+    @classmethod
+    def validate_new_password_no_spaces(cls, value):
+        if isinstance(value, str) and any(character.isspace() for character in value):
+            raise ValueError("Password must not contain spaces")
+        return value
 
 
 @router.post("/verify-otp-and-signup", status_code=status.HTTP_201_CREATED)

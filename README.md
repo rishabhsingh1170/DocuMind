@@ -1,4 +1,4 @@
-d# Knowledge Enterprise Automation
+# Knowledge Enterprise Automation
 
 A secure multi-tenant enterprise knowledge assistant built with a FastAPI backend, a React/Vite frontend, MongoDB, ChromaDB, Cloudinary, and Mistral-powered RAG.
 
@@ -16,10 +16,12 @@ The project lets admins upload company documents, manage access, and provide emp
 ## Features
 
 - OTP-based signup and login
+- Password validation before OTP is sent
 - Role-based access for admins and employees
 - Secure document upload and storage
 - Tenant-scoped retrieval with ChromaDB
 - Grounded chat responses using Mistral
+- Account deletion from the profile menu
 - Responsive React frontend
 
 ## Prerequisites
@@ -107,9 +109,17 @@ The app starts on `http://127.0.0.1:5173` by default.
 - `POST /auth/login` - Login and receive JWT token
 - `GET /users/` - List users
 - `POST /users/{user_id}/profile-image` - Upload a user profile image
+- `DELETE /users/me` - Delete the authenticated account and related records
 - `GET /documents/` - List documents
 - `GET /chats/` - List accessible chats
 - `POST /chats/{chat_id}/ask` - Ask a question against a chat document
+
+## Recent Changes
+
+- Signup now validates password length, strength, and disallows spaces before OTP is sent.
+- Password rules are enforced again on the backend during signup and password reset.
+- Users can delete their own account from the profile menu.
+- Admin account deletion also removes linked chats, documents, access records, and company data.
 
 ## Architecture Flow
 
@@ -128,6 +138,7 @@ flowchart LR
 
 - The backend contains separate route modules for auth, users, documents, and chats.
 - The frontend uses `AuthContext` for auth state and `react-markdown` for rendering formatted chat responses.
+- Admin account deletion requires removing the admin chat first only in the UI flow; the backend delete route now performs the cleanup for the owned chat and related records.
 - The vector store is persisted in `chroma_db/`.
 
 ## Troubleshooting

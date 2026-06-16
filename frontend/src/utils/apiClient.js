@@ -238,6 +238,14 @@ export const userAPI = {
       method: "POST",
     });
   },
+
+  /**
+   * Delete the currently authenticated account
+   */
+  deleteMyAccount: () =>
+    fetchWithAuth("/users/me", {
+      method: "DELETE",
+    }),
 };
 
 // ==================== Document API Endpoints ====================

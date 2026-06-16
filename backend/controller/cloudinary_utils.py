@@ -155,3 +155,14 @@ def delete_document_by_url(file_url: str) -> bool:
         return False
 
     return delete_file(public_id, resource_type="raw")
+
+
+def delete_profile_image_by_url(file_url: str) -> bool:
+    """
+    Delete a Cloudinary profile image using its stored secure URL.
+    """
+    public_id = _extract_public_id_from_url(file_url)
+    if not public_id:
+        return False
+
+    return delete_file(public_id, resource_type="image")
