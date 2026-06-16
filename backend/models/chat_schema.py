@@ -127,7 +127,3 @@ class ChatAccessRevokeResponse(BaseModel):
 class ChatAccessCodeVerifyResponse(BaseModel):
     chat_id: ObjectIdStr
     verification_token: str
-
-
-class ChatSchema(ChatCreate):
-    pass

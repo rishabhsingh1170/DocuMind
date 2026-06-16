@@ -22,7 +22,3 @@ class CompanyInDB(CompanyBase):
 
 class CompanyResponse(CompanyInDB):
 	pass
-
-
-class CompanySchema(CompanyCreate):
-	pass

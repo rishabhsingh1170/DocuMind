@@ -25,7 +25,3 @@ class DocumentInDB(DocumentBase):
 
 class DocumentResponse(DocumentInDB):
 	pass
-
-
-class DocumentSchema(DocumentCreate):
-	pass

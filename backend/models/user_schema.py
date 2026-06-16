@@ -54,7 +54,3 @@ class UserResponse(UserBase):
     company_id: Optional[ObjectIdStr] = None
 
     model_config = ConfigDict(populate_by_name=True)
-
-
-class UserSchema(UserCreate):
-    pass

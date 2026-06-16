@@ -6,6 +6,10 @@
   color-scheme: only light;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply m-0 bg-slate-50 font-sans text-slate-900 antialiased;
   background-image:
@@ -20,6 +24,10 @@ body {
       transparent 28%
     ),
     linear-gradient(180deg, #f8fafc 0%, #ffffff 40%, #f8fafc 100%);
+}
+
+section[id] {
+  scroll-margin-top: 6rem;
 }
 
 .section-reveal {

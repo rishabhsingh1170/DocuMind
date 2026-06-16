@@ -67,6 +67,11 @@ def generate_grounded_answer(question: str, context_chunks: list[dict]) -> str:
     system_prompt = (
         "You are a policy assistant. Answer strictly from the provided PDF context. "
         "Never use outside knowledge. Never infer missing facts. "
+        "Format your response using markdown with:\n"
+        "- Use **bold** for key terms and headers\n"
+        "- Use bullet points (- or *) for lists\n"
+        "- Use proper sections and structure\n"
+        "- Use line breaks between sections for readability\n"
         "If the answer is not explicitly present in the context, reply exactly: "
         f'"{FALLBACK_RESPONSE}"'
     )

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Bot, Loader2, MessageSquareText, Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { chatAPI } from "../utils/apiClient";
 import { useAuth } from "../context/AuthContext";
 
@@ -37,11 +38,17 @@ function MessageBubble({ role, text, createdAt, isThinking = false }) {
           )}
           <span>{isUser ? "You" : "Assistant"}</span>
         </div>
-        <p
-          className={`whitespace-pre-wrap break-words text-sm leading-6 ${isThinking ? "animate-pulse italic" : ""}`}
+        <div
+          className={`text-sm leading-6 ${isThinking ? "animate-pulse italic" : ""}`}
         >
-          {text}
-        </p>
+          {isUser ? (
+            <p className="whitespace-pre-wrap break-words">{text}</p>
+          ) : (
+            <div className="prose prose-sm max-w-none [&_p]:m-1 [&_p]:leading-6 [&_ul]:my-1 [&_ul]:ml-4 [&_li]:m-0 [&_strong]:font-bold [&_h1]:text-base [&_h2]:text-base [&_h3]:text-sm">
+              <ReactMarkdown>{text}</ReactMarkdown>
+            </div>
+          )}
+        </div>
         {createdAt && (
           <p
             className={`mt-2 text-xs ${isUser ? "text-indigo-100" : "text-slate-500"}`}

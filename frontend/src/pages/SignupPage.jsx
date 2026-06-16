@@ -140,7 +140,7 @@ export default function SignupPage() {
               label="Full Name"
               value={formData.fullName}
               onChange={handleChange}
-              placeholder="Alex Morgan"
+              placeholder="Akshay kumar"
               autoComplete="name"
               required
             />

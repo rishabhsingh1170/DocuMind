@@ -10,13 +10,8 @@ export const APIS = {
     // POST /auth/verify-otp-and-signup
     VERIFY_OTP_AND_SIGNUP: "/auth/verify-otp-and-signup",
 
-    // POST /auth/signup
-    // Legacy/alternate signup route present in backend.
-    SIGNUP: "/auth/signup",
-
     // POST /auth/login
     LOGIN: "/auth/login",
-    
   },
 
   // User routes (/users)
@@ -32,13 +27,6 @@ export const APIS = {
   DOCUMENTS: {
     // GET /documents/
     LIST: "/documents/",
-  },
-
-  // Company routes (/companies)
-  // NOTE: currently no active endpoints in backend/routes/company.py.
-  COMPANIES: {
-    // Keep prefix for future company endpoints.
-    PREFIX: "/companies",
   },
 
   // Chat routes (/chats)
