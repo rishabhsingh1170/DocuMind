@@ -15,7 +15,8 @@ export default function EmployeeAccessPanel({
   return (
     <div className="mt-8 space-y-6">
       {activeEmployeeAction === "verify" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-6">
+        <div className="rounded-lg border border-slate-200 bg-white p-6 ">
+          
           <h3 className="mb-2 inline-flex items-center gap-2 text-lg font-semibold text-slate-900">
             <Shield className="h-5 w-5 text-indigo-600" />
             Verify Access Code

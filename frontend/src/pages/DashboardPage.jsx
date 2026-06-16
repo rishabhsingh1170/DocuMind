@@ -25,6 +25,7 @@ export default function DashboardPage() {
   const { user, logout, updateUser } = useAuth();
   const navigate = useNavigate();
   const isAdmin = user?.role === "admin";
+  const isEmployee = user?.role === "employee";
 
   const [documents, setDocuments] = useState([]);
   const [isLoadingDocuments, setIsLoadingDocuments] = useState(true);
@@ -373,16 +374,18 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 ">
       <DashboardNavbar
         user={user}
         onLogout={handleLogout}
         onUserUpdated={updateUser}
       />
 
-      <div className="mx-auto max-w-7xl px-6 py-12">
+      <div className="mx-auto max-w-7xl px-6 py-12 ">
         <div className="rounded-lg bg-white p-8 shadow-md">
-          <h2 className="mb-2 text-3xl font-bold text-slate-900">Dashboard</h2>
+          <h2 className="mb-2 text-3xl font-bold text-slate-900"> 
+            {isAdmin ? "Admin Dashboard" : isEmployee ? "Employee Dashboard" : "Dashboard"}
+            </h2>
           {/* <p className="mb-8 text-slate-600">
             Use the action buttons below. Panels only open when selected.
           </p> */}
@@ -416,7 +419,31 @@ export default function DashboardPage() {
             </div>
           )}
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          {isEmployee && (
+            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+              
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
+                <h4 className="mb-2 font-semibold text-slate-900">Open Chat </h4>
+                <p className="text-sm text-slate-600">
+                  open the chat to ask questions after getting access.
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
+                <h4 className="mb-2 font-semibold text-slate-900">Verify Code</h4>
+                <p className="text-sm text-slate-600">
+                 Enter your access code, provide by the admin.
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
+                <h4 className="mb-2 font-semibold text-slate-900">Request Access</h4>
+                <p className="text-sm text-slate-600">
+                  Request access after verifying the code to gain entry.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             {isAdmin && (
               <ActionButton
                 icon={FolderOpen}
@@ -716,6 +743,10 @@ export default function DashboardPage() {
               verificationToken={verificationToken}
             />
           )}
+
+          
+
+
         </div>
       </div>
     </div>
