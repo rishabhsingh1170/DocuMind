@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
 
 export const APIS = {
   // Authentication routes (/auth)
@@ -12,6 +12,12 @@ export const APIS = {
 
     // POST /auth/login
     LOGIN: "/auth/login",
+
+    // POST /auth/forgot-password/send-otp
+    FORGOT_PASSWORD_SEND_OTP: "/auth/forgot-password/send-otp",
+
+    // POST /auth/forgot-password/reset
+    FORGOT_PASSWORD_RESET: "/auth/forgot-password/reset",
   },
 
   // User routes (/users)
@@ -21,6 +27,9 @@ export const APIS = {
 
     // POST /users/{user_id}/profile-image
     UPLOAD_PROFILE_IMAGE: (userId) => `/users/${userId}/profile-image`,
+
+    // DELETE /users/me
+    DELETE_ME: "/users/me",
   },
 
   // Document routes (/documents)
@@ -63,6 +72,11 @@ export const APIS = {
     // Admin only. Body: { action: "approve" | "deny" }
     REVIEW_ACCESS_REQUEST: (requestId) =>
       `/chats/access/requests/${requestId}/decision`,
+
+    // DELETE /chats/{chat_id}/access/{employee_id}
+    // Admin only.
+    REVOKE_ACCESS: (chatId, employeeId) =>
+      `/chats/${chatId}/access/${employeeId}`,
 
     // GET /chats/{chat_id}
     // Auth required and permission-gated on backend.

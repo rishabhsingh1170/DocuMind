@@ -3,8 +3,7 @@
  * Handles all HTTP requests with automatic authentication and error handling
  */
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+import { API_BASE_URL, APIS } from "./apis";
 
 /**
  * Get the stored JWT token from localStorage
@@ -160,7 +159,7 @@ export const authAPI = {
    * Send OTP to email for signup verification
    */
   sendOTP: (email) =>
-    fetchWithAuth("/auth/send-otp", {
+    fetchWithAuth(APIS.AUTH.SEND_OTP, {
       method: "POST",
       body: JSON.stringify({ email }),
     }),
@@ -182,7 +181,7 @@ export const authAPI = {
       payload.profile_url = profileUrl.trim();
     }
 
-    return fetchWithAuth("/auth/verify-otp-and-signup", {
+    return fetchWithAuth(APIS.AUTH.VERIFY_OTP_AND_SIGNUP, {
       method: "POST",
       body: JSON.stringify(payload),
     });
@@ -192,7 +191,7 @@ export const authAPI = {
    * Login with email and password
    */
   login: (email, password) =>
-    fetchWithAuth("/auth/login", {
+    fetchWithAuth(APIS.AUTH.LOGIN, {
       method: "POST",
       body: JSON.stringify({ email, password }),
     }),
@@ -201,7 +200,7 @@ export const authAPI = {
    * Send OTP for forgot-password flow
    */
   sendForgotPasswordOTP: (email) =>
-    fetchWithAuth("/auth/forgot-password/send-otp", {
+    fetchWithAuth(APIS.AUTH.FORGOT_PASSWORD_SEND_OTP, {
       method: "POST",
       body: JSON.stringify({ email }),
     }),
@@ -210,7 +209,7 @@ export const authAPI = {
    * Verify OTP and reset password
    */
   resetPasswordWithOTP: (email, otp, newPassword) =>
-    fetchWithAuth("/auth/forgot-password/reset", {
+    fetchWithAuth(APIS.AUTH.FORGOT_PASSWORD_RESET, {
       method: "POST",
       body: JSON.stringify({
         email: String(email || "").trim(),
@@ -226,7 +225,7 @@ export const userAPI = {
   /**
    * Get all users
    */
-  listUsers: () => fetchWithAuth("/users/"),
+  listUsers: () => fetchWithAuth(APIS.USERS.LIST),
 
   /**
    * Upload user profile image
@@ -234,16 +233,20 @@ export const userAPI = {
   uploadProfileImage: (userId, file) => {
     const formData = new FormData();
     formData.append("file", file);
-    return fetchMultipartWithAuth(`/users/${userId}/profile-image`, formData, {
-      method: "POST",
-    });
+    return fetchMultipartWithAuth(
+      APIS.USERS.UPLOAD_PROFILE_IMAGE(userId),
+      formData,
+      {
+        method: "POST",
+      },
+    );
   },
 
   /**
    * Delete the currently authenticated account
    */
   deleteMyAccount: () =>
-    fetchWithAuth("/users/me", {
+    fetchWithAuth(APIS.USERS.DELETE_ME, {
       method: "DELETE",
     }),
 };
@@ -254,7 +257,7 @@ export const documentAPI = {
   /**
    * Get all documents
    */
-  listDocuments: () => fetchWithAuth("/documents/"),
+  listDocuments: () => fetchWithAuth(APIS.DOCUMENTS.LIST),
 };
 
 // ==================== Chat API Endpoints ====================
@@ -268,7 +271,7 @@ export const chatAPI = {
     formData.append("company_name", companyName);
     formData.append("document_name", documentName);
     formData.append("file", file);
-    return fetchMultipartWithAuth("/chats/create", formData, {
+    return fetchMultipartWithAuth(APIS.CHATS.CREATE, formData, {
       method: "POST",
     });
   },
@@ -276,23 +279,23 @@ export const chatAPI = {
   /**
    * List chats accessible to current user
    */
-  listChats: () => fetchWithAuth("/chats/"),
+  listChats: () => fetchWithAuth(APIS.CHATS.LIST),
 
   /**
    * Get admin's own chat
    */
-  getAdminChat: () => fetchWithAuth("/chats/admin/me"),
+  getAdminChat: () => fetchWithAuth(APIS.CHATS.ADMIN_ME),
 
   /**
    * Get chat access code
    */
-  getAccessCode: () => fetchWithAuth("/chats/admin/access-code"),
+  getAccessCode: () => fetchWithAuth(APIS.CHATS.ADMIN_ACCESS_CODE),
 
   /**
    * Verify access code
    */
   verifyAccessCode: (accessCode) =>
-    fetchWithAuth("/chats/access/verify-code", {
+    fetchWithAuth(APIS.CHATS.VERIFY_ACCESS_CODE, {
       method: "POST",
       body: JSON.stringify({ access_code: accessCode }),
     }),
@@ -301,7 +304,7 @@ export const chatAPI = {
    * Request chat access
    */
   requestAccess: (chatId, verificationToken) =>
-    fetchWithAuth("/chats/access/request", {
+    fetchWithAuth(APIS.CHATS.REQUEST_ACCESS, {
       method: "POST",
       body: JSON.stringify({
         chat_id: chatId,
@@ -313,13 +316,13 @@ export const chatAPI = {
    * List access requests (admin only)
    */
   listAccessRequests: (status = "pending") =>
-    fetchWithAuth(`/chats/access/requests?status=${status}`),
+    fetchWithAuth(`${APIS.CHATS.LIST_ACCESS_REQUESTS}?status=${status}`),
 
   /**
    * Review access request (admin only)
    */
   reviewAccessRequest: (requestId, action) =>
-    fetchWithAuth(`/chats/access/requests/${requestId}/decision`, {
+    fetchWithAuth(APIS.CHATS.REVIEW_ACCESS_REQUEST(requestId), {
       method: "POST",
       body: JSON.stringify({ action }),
     }),
@@ -328,20 +331,20 @@ export const chatAPI = {
    * Revoke employee access to a chat (admin only)
    */
   revokeAccess: (chatId, employeeId) =>
-    fetchWithAuth(`/chats/${chatId}/access/${employeeId}`, {
+    fetchWithAuth(APIS.CHATS.REVOKE_ACCESS(chatId, employeeId), {
       method: "DELETE",
     }),
 
   /**
    * Get chat by ID
    */
-  getChat: (chatId) => fetchWithAuth(`/chats/${chatId}`),
+  getChat: (chatId) => fetchWithAuth(APIS.CHATS.BY_ID(chatId)),
 
   /**
    * Ask a question to the chat
    */
   ask: (chatId, question, topK = 4) =>
-    fetchWithAuth(`/chats/${chatId}/ask`, {
+    fetchWithAuth(APIS.CHATS.ASK(chatId), {
       method: "POST",
       body: JSON.stringify({
         question,
@@ -353,7 +356,7 @@ export const chatAPI = {
    * Delete a chat
    */
   deleteChat: (chatId) =>
-    fetchWithAuth(`/chats/${chatId}`, {
+    fetchWithAuth(APIS.CHATS.DELETE(chatId), {
       method: "DELETE",
     }),
 };
