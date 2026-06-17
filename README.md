@@ -1,3 +1,12 @@
+title: DocMind
+emoji: 🌖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+license: mit
+short_description: Knowledge-Enterprise-Automantion using RAG
+
 # Knowledge Enterprise Automation
 
 A secure multi-tenant enterprise knowledge assistant built with a FastAPI backend, a React/Vite frontend, MongoDB, ChromaDB, Cloudinary, and Mistral-powered RAG.
